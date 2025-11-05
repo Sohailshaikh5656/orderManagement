@@ -151,7 +151,7 @@ GET http://localhost:3000/api/admin/analytics<br><br>
 
 Get API Docs<br>
 
-GET http://localhost:3000/api_doc<br>
+GET http://localhost:3000/api-doc<br>
 
 👨‍💻 Author<br><br>
 
