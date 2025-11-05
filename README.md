@@ -28,6 +28,7 @@ A **modular Order Management System** built with **Node.js**, **Express**, **Pri
 <img src='./ScreenShot/s4.png' height=400>
 <br />
 <hr />
+</div>
 
 ## 📁 Project Structure
 
