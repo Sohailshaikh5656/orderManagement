@@ -19,7 +19,6 @@ app_routing.v1(app)
 try{
     app.listen(process.env.PORT || 3000,()=>{
         console.log(`App Started on ${process.env.PORT} PORT`.bgGreen)
-        console.log(`Api Documentation : ${process.env.URL}${process.env.PORT}/api-doc`.bgCyan)
     })
 }catch(error){
     console.log(`Error in Server :${error}`.bgRed.white)
