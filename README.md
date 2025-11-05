@@ -119,7 +119,7 @@ node app.js
 🧠 Test the API Documentation
 
 After starting the project, open this in your browser 👇<br>
-👉 http://localhost:3000/api_doc
+👉 http://localhost:3000/api-doc
 
 This will open the EJS-based API Documentation Dashboard.<br>
 <br>
