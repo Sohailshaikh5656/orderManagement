@@ -1,0 +1,106 @@
+SignUp | Simple Login: 
+{
+    "username" : "Sohail",
+	"phone" : 6354621890,
+    "email" : "ayan@gmail.com",
+    "password" : "Sohail@1234",
+    "os_version" : "Android",
+    "app_version" : "14.4",
+    "device_type" : "I",
+    "latitude":"23.008208950402558",
+    "longitude":"72.60065744565372",
+	"address" : "Behrampura Ahmedabad"
+}
+SignUp | Social Login :
+{
+    "username" : "Rehan",
+	"phone" : 6354621892,
+    "email" : "rehan@gmail.com",
+    "os_version" : "Android",
+    "app_version" : "14.4",
+    "device_type" : "I",
+    "latitude":"23.008208950402558",
+    "longitude":"72.60065744565372",
+	"address" : "Behrampura Ahmedabad",
+    "login_type":"G"
+}
+verifyOtp : 
+{
+	"user_id":1,
+	"otp" : "6135"
+}
+
+forgetPassword : 
+{
+	"email" : "amar@gmail.com"
+}
+
+resetPassword : 
+{
+	"user_id" : 12,
+	"password" : "Amar@1234"
+}
+login : 
+{
+    "emailOrPhone":"tufel@gmail.com",
+    "password" : "Sohail@1234",
+    "os_version":"14.5",
+    "app_version" : "Android 15",
+    "device_type" : "A"
+}
+
+
+
+addContextPage 
+{
+	"title" : "About Us Page",
+	"tag" : "1",
+	"context" : "<!DOCTYPE html>
+	<title>About Us</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <h1>About Us</h1>
+    <div class='content'>
+        <p>Welcome to our company! We are dedicated to providing the best services to our customers. Our journey began with a mission to bring quality and innovation to the industry. With years of experience and a passion for excellence, we strive to exceed expectations.</p>
+        
+        <p>Our team consists of skilled professionals who are committed to delivering outstanding results. We believe in continuous improvement and staying ahead of the curve to meet the ever-changing demands of the market. Customer satisfaction is at the heart of everything we do.</p>
+        
+        <p>We take pride in our values of integrity, transparency, and dedication. Our goal is to create long-lasting relationships with our clients and partners. By fostering a culture of trust and collaboration, we aim to build a brighter future for everyone.</p>
+        
+        <p>Thank you for choosing us. We look forward to working with you and making a positive impact together.</p>
+    </div>
+</body>
+</html>
+"
+}
+
+
+
+SELECT 
+    mp.date,
+    DAYNAME(mp.date) AS day, 
+    m.name AS meal,
+    od.qty,
+    (WEEK(mp.date, 1) - WEEK(DATE_SUB(mp.date, INTERVAL DAYOFMONTH(mp.date)-1 DAY), 1) + 1) AS week_number
+FROM tbl_meal_provider AS mp
+JOIN tbl_meal AS m ON mp.meal_id = m.id
+JOIN tbl_order_details AS od ON od.meal_provider_id = mp.id
+WHERE YEAR(mp.date) = YEAR(CURRENT_DATE) 
+AND MONTH(mp.date) = MONTH(CURRENT_DATE)
+ORDER BY week_number, mp.date;

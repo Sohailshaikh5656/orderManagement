@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= globals.app_name %> API Documentation</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet">
+    <link href="https://unpkg.com/vuetify@1.0.17/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="<%= globals.LOGO %>">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .header-banner {
+            background: linear-gradient(135deg, #2c7399 0%, #1a4a63 100%);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+        .api-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .jwt-info {
+            background-color: #fffbdd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .server-info {
+            background-color: #e8f5e9;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .api-section {
+            margin-bottom: 30px;
+        }
+        .section-title {
+            color: #2c7399;
+            border-bottom: 2px solid #2c7399;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .endpoint-card {
+            margin-bottom: 15px;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .endpoint-header {
+            background-color: #f5f5f5;
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .endpoint-method {
+            padding: 4px 8px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .method-get { background-color: #4caf50; }
+        .method-post { background-color: #2196f3; }
+        .method-put { background-color: #ff9800; }
+        .method-delete { background-color: #f44336; }
+        .endpoint-body {
+            padding: 15px;
+            background-color: white;
+            border-top: 1px solid #e0e0e0;
+        }
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        .param-table th, .param-table td {
+            border: 1px solid #e0e0e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        .param-table th {
+            background-color: #f5f5f5;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .nav-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-tab.active {
+            border-bottom: 2px solid #2c7399;
+            color: #2c7399;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .quick-link {
+            background-color: #2c7399;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .quick-link:hover {
+            background-color: #1a4a63;
+        }
+        .alert-box {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .alert-mandatory {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+        .alert-optional {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+        }
+        .alert-important {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+        .alert-notes {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="header-banner">
+            <div class="api-container">
+                <h1 style="margin: 0; font-size: 28px;"><%= globals.app_name %> API Documentation</h1>
+                <p style="margin: 5px 0 0; opacity: 0.9;">Complete API reference for developers</p>
+            </div>
+        </div>
+
+        <div class="api-container">
+            <div class="server-info">
+                <h3 style="margin-top: 0;">Server Information</h3>
+                <p><strong>Base URL:</strong> <%= globals.app_url %></p>
+                <p><strong>API Key:</strong> <%= globals.api_key %></p>
+                <p><strong>Encryption IV:</strong> <%= globals.encryptionIV %></p>
+            </div>
+
+            <div class="jwt-info">
+                <h3 style="margin-top: 0; color: #856404;">
+                    <v-icon color="warning">info</v-icon>
+                    JWT Token Instructions
+                </h3>
+                <p>After successful registration or login, you will receive a JWT token in the response. This token must be included in the <strong>Authorization</strong> header for all subsequent API requests, along with the API key.</p>
+                <div class="code-block">
+                    Headers: {
+                      "api_key": "<%= globals.api_key %>",
+                      "jwt_token": "jwt_token_received_from_login_or_register",
+                      "accept_language": "en",
+                      "Content-Type": "application/json"
+                    }
+                </div>
+                <p><strong>Note:</strong> Without a valid JWT token, you will receive "Invalid Token" or "Token Not Found" errors.</p>
+            </div>
+
+            <div class="quick-links">
+                <a href="<%= globals.port_base_url %>v1/api_document/code" class="quick-link">
+                    <v-icon small color="white">code</v-icon>
+                    Code Reference
+                </a>
+                <a target="_blank" href="http://3.125.89.55/tostylmou/enc_dec.php" class="quick-link">
+                    <v-icon small color="white">lock</v-icon>
+                    Encryption Tool
+                </a>
+            </div>
+
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchTab('admin')">Admin APIs</div>
+                <div class="nav-tab" onclick="switchTab('buyer')">Buyer/User APIs</div>
+                <div class="nav-tab" onclick="switchTab('supplier')">Supplier APIs</div>
+            </div>
+
+            <!-- Admin APIs -->
+            <div id="admin-tab" class="tab-content active">
+                <div class="api-section">
+                    <h2 class="section-title">Admin Endpoints</h2>
+                    <div v-for="(message, i) in adminApis" :key="i" class="endpoint-card">
+                        <div class="endpoint-header" @click="toggleEndpoint(`admin-${i}`)">
+                            <div style="display: flex; align-items: center;">
+                                <span class="endpoint-method" :class="`method-${message.meth.toLowerCase()}`">{{ message.meth }}</span>
+                                <span>{{ message.name }}</span>
+                            </div>
+                            <v-icon>{{ isEndpointOpen[`admin-${i}`] ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
+                        </div>
+                        <div :id="`admin-${i}`" class="endpoint-body" :style="{display: isEndpointOpen[`admin-${i}`] ? 'block' : 'none'}">
+                            <p><strong>Endpoint:</strong> {{ message.link }}</p>
+                            <p><strong>Description:</strong> {{ message.notes }}</p>
+                            
+                            <div class="alert-box alert-mandatory" v-if="message.mandatory">
+                                <strong>Mandatory Parameters:</strong> {{ message.mandatory }}
+                            </div>
+                            
+                            <div class="alert-box alert-optional" v-if="message.optional">
+                                <strong>Optional Parameters:</strong> {{ message.optional }}
+                            </div>
+                            
+                            <h4>Headers</h4>
+                            <table class="param-table">
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr>
+                                    <td>api_key</td>
+                                    <td>Yes</td>
+                                    <td>API authentication key</td>
+                                </tr>
+                                <tr v-if="message.header.includes('authorization')">
+                                    <td>jwt_token</td>
+                                    <td>Yes</td>
+                                    <td>JWT token received after login</td>
+                                </tr>
+                            </table>
+                            
+                            <div class="alert-box alert-important" v-if="message.imp">
+                                <strong>Important:</strong> {{ message.imp }}
+                            </div>
+                            
+                            <h4>Response Status</h4>
+                            <div v-html="message.status"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buyer/User APIs -->
+            <div id="buyer-tab" class="tab-content">
+                <div class="api-section">
+                    <h2 class="section-title">Buyer/User Endpoints</h2>
+                    <div v-for="(message, i) in buyerApis" :key="i" class="endpoint-card">
+                        <div class="endpoint-header" @click="toggleEndpoint(`buyer-${i}`)">
+                            <div style="display: flex; align-items: center;">
+                                <span class="endpoint-method" :class="`method-${message.meth.toLowerCase()}`">{{ message.meth }}</span>
+                                <span>{{ message.name }}</span>
+                            </div>
+                            <v-icon>{{ isEndpointOpen[`buyer-${i}`] ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
+                        </div>
+                        <div :id="`buyer-${i}`" class="endpoint-body" :style="{display: isEndpointOpen[`buyer-${i}`] ? 'block' : 'none'}">
+                            <p><strong>Endpoint:</strong> {{ message.link }}</p>
+                            <p><strong>Description:</strong> {{ message.notes }}</p>
+                            
+                            <div class="alert-box alert-mandatory" v-if="message.mandatory">
+                                <strong>Mandatory Parameters:</strong> 
+                                <div class="code-block">{{ message.mandatory }}</div>
+                            </div>
+                            
+                            <div class="alert-box alert-optional" v-if="message.optional">
+                                <strong>Optional Parameters:</strong> {{ message.optional }}
+                            </div>
+                            
+                            <h4>Headers</h4>
+                            <table class="param-table">
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr>
+                                    <td>api_key</td>
+                                    <td>Yes</td>
+                                    <td>API authentication key</td>
+                                </tr>
+                                <tr v-if="message.header.includes('authorization')">
+                                    <td>jwt_token</td>
+                                    <td>Yes</td>
+                                    <td>JWT token received after login</td>
+                                </tr>
+                            </table>
+                            
+                            <div class="alert-box alert-important" v-if="message.imp">
+                                <strong>Important:</strong> {{ message.imp }}
+                            </div>
+                            
+                            <h4>Response Status</h4>
+                            <div v-html="message.status"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supplier APIs -->
+            <div id="supplier-tab" class="tab-content">
+                <div class="api-section">
+                    <h2 class="section-title">Supplier Endpoints</h2>
+                    <div v-for="(message, i) in supplierApis" :key="i" class="endpoint-card">
+                        <div class="endpoint-header" @click="toggleEndpoint(`supplier-${i}`)">
+                            <div style="display: flex; align-items: center;">
+                                <span class="endpoint-method" :class="`method-${message.meth.toLowerCase()}`">{{ message.meth }}</span>
+                                <span>{{ message.name }}</span>
+                            </div>
+                            <v-icon>{{ isEndpointOpen[`supplier-${i}`] ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
+                        </div>
+                        <div :id="`supplier-${i}`" class="endpoint-body" :style="{display: isEndpointOpen[`supplier-${i}`] ? 'block' : 'none'}">
+                            <p><strong>Endpoint:</strong> {{ message.link }}</p>
+                            <p><strong>Description:</strong> {{ message.notes }}</p>
+                            
+                            <div class="alert-box alert-mandatory" v-if="message.mandatory">
+                                <strong>Mandatory Parameters:</strong> {{ message.mandatory }}
+                            </div>
+                            
+                            <div class="alert-box alert-optional" v-if="message.optional">
+                                <strong>Optional Parameters:</strong> {{ message.optional }}
+                            </div>
+                            
+                            <h4>Headers</h4>
+                            <table class="param-table">
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr>
+                                    <td>api_key</td>
+                                    <td>Yes</td>
+                                    <td>API authentication key</td>
+                                </tr>
+                                <tr v-if="message.header.includes('authorization')">
+                                    <td>jwt_token</td>
+                                    <td>Yes</td>
+                                    <td>JWT token received after login</td>
+                                </tr>
+                            </table>
+                            
+                            <div class="alert-box alert-important" v-if="message.imp">
+                                <strong>Important:</strong> {{ message.imp }}
+                            </div>
+                            
+                            <h4>Response Status</h4>
+                            <div v-html="message.status"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuetify@1.0.17/dist/vuetify.min.js"></script>
+    <script>
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Activate selected tab button
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Initialize Vue and Vuetify
+        new Vue({
+            el: '#app',
+            data: () => ({
+                isEndpointOpen: {},
+                messages: [{
+                    color: 'teal',
+                    icon: 'person',
+                    title: '1 : ADMIN',
+                    name: 'Admin Register',
+                    meth: 'POST',
+                    link: "<%= globals.port_base_url %>api/admin/register",
+                    mandatory: "name,email,password",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key",
+                    notes: "This api used to Register New Admin",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '2 : ADMIN',
+                    name: 'Admin Login',
+                    meth: 'POST',
+                    link: "<%= globals.port_base_url %>api/admin/login",
+                    mandatory: "email,password",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key",
+                    notes: "This api used to admin login",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '3 : ADMIN',
+                    name: 'Update Order Status',
+                    meth: 'GET',
+                    link: "<%= globals.port_base_url %>api/admin/orders",
+                    mandatory: "orderId : id,status",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key, authorization : jwt_Token",
+                    notes: "This api used to Update And New Status for order",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1 ",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '4 : ADMIN',
+                    name: 'Analytics || Dashboard',
+                    meth: 'POST',
+                    link: "<%= globals.port_base_url %>api/admin/analytics",
+                    mandatory: "",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "YES",
+                    header: "api_key , authorization : jwt_Token",
+                    notes: "This api used to get Dashboard Data",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1 ",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '5 : Buyer/User',
+                    name: 'User Register',
+                    meth: 'POST',
+                    link: "<%= globals.port_base_url %>api/buyer/register",
+                    mandatory: "name,email,password",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key",
+                    notes: "This api used to Register New Buyer",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '6 : Buyer/User',
+                    name: 'User Login',
+                    meth: 'POST',
+                    link: "<%= globals.port_base_url %>api/buyer/login",
+                    mandatory: "email,password",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key",
+                    notes: "This api used to Buyer login",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '7 : Buyer/User',
+                    name: 'Get List of Product',
+                    meth: 'GET',
+                    link: "<%= globals.port_base_url %>api/buyer/products",
+                    mandatory: "",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key, authorization : jwT_token",
+                    notes: "This api used to user get All Product List",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1 ",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result,",
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '8 : BUYER/USER',
+                    name: 'Order',
+                    meth: 'POST',
+                    link: "<%= globals.port_base_url %>api/buyer/orders",
+                    mandatory: `OrderData : [productId, quantity]\nExample : {\n  "OrderData": [\n    {\n      "productId": 3,\n      "quantity": 1\n    },\n    {\n      "productId": 4,\n      "quantity": 2\n    }\n  ]\n}`,
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key, authorization : jwT_token",
+                    notes: "This api used to do order",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1 ",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result,",
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '9 : BUYER/USER',
+                    name: 'View Single Order',
+                    meth: 'GET',
+                    link: "<%= globals.port_base_url %>v1/buyer/order",
+                    mandatory: "id:orderId",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key, authorization : jwT_token",
+                    notes: "This api used for view of Single Order",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1 ",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result,",
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '10 : BUYER/USER',
+                    name: 'All Order List',
+                    meth: 'GET',
+                    link: "<%= globals.port_base_url %>v1/buyer/order",
+                    mandatory: "",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key,authorization",
+                    notes: "This api used to view All Orders",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1 ",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result,",
+                },
+                {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '11 : SUPPLIER',
+                    name: 'Supplier Register',
+                    meth: 'POST',
+                    link: "<%= globals.port_base_url %>api/supplier/register",
+                    mandatory: "name,email,password",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key",
+                    notes: "This api used to Register New Supplier",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+
+                }, {
+                    color: 'teal',
+                    icon: 'person',
+                    title: '12 : Supplier',
+                    name: 'Supplier Login',
+                    meth: 'POST',
+                    link: "<%= globals.port_base_url %>api/supplier/login",
+                    mandatory: "email,password",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key",
+                    notes: "This api used to Supplier login",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+
+                },{
+                    color: 'teal',
+                    icon: 'person',
+                    title: '13 : Supplier',
+                    name: 'New Product',
+                    meth: 'POST',
+                    link: "<%= globals.port_base_url %>api/supplier/products",
+                    mandatory: "name, description, price, unit[in:KG,G,MG,L,ML,PC,PCS,PACK,BAG,BOX,BOTTLE,CAN], conversion, stock",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key, authorization : jwT_token",
+                    notes: "This api used to Supplier Products",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+
+                },{
+                    color: 'teal',
+                    icon: 'person',
+                    title: '14 : Supplier',
+                    name: 'Get Order',
+                    meth: 'GET',
+                    link: "<%= globals.port_base_url %>api/supplier/orders",
+                    mandatory: "",
+                    optional: "id:orderId",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key, authorization : jwT_token",
+                    notes: "This api used to Supplier OrdersItems",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+
+                },{
+                    color: 'teal',
+                    icon: 'person',
+                    title: '15 : Supplier',
+                    name: 'Update Stock',
+                    meth: 'GET',
+                    link: "<%= globals.port_base_url %>api/supplier/products",
+                    mandatory: "id:productId, stock",
+                    optional: "",
+                    is_header: "YES",
+                    is_push: "NO",
+                    header: "api_key, authorization : jwT_token",
+                    notes: "This api used to Supplier to Update Stock",
+                    status: "<br>1. HTTP_OK[200] - code : 0 <br>2. HTTP_OK[200] - code : 1",
+                    imp: "Code 0 =>Failure, Code 1 => succesfully result",
+
+                }]
+            }),
+            computed: {
+                adminApis() {
+                    return this.messages.filter(msg => msg.title.includes('ADMIN'));
+                },
+                buyerApis() {
+                    return this.messages.filter(msg => msg.title.includes('Buyer') || msg.title.includes('BUYER'));
+                },
+                supplierApis() {
+                    return this.messages.filter(msg => msg.title.includes('Supplier') || msg.title.includes('SUPPLIER'));
+                }
+            },
+            methods: {
+                toggleEndpoint(id) {
+                    this.$set(this.isEndpointOpen, id, !this.isEndpointOpen[id]);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

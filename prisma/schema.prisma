@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String
+  password String
+  role String
+  orders Order[]
+  products Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt 
+}
+
+model Product{
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  price Float
+  unit String
+  conversion Float?
+  stock Float
+  supplierId Int
+  supplier User @relation(fields: [supplierId], references: [id])
+  orderItems OrderItems[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt 
+}
+
+model Order{
+  id Int @id @default(autoincrement())
+  buyerId Int
+  buyer User @relation(fields: [buyerId], references: [id])
+  grandTotal Float @default(0)
+  status String @default("Pending")
+  orderItems OrderItems[]
+  statusLogs StatusLog[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model OrderItems{
+  id Int @id @default(autoincrement())
+  orderId Int 
+  productId Int
+  quantity Float
+  price Float
+  totalPrice Float
+  uom String
+  changedAt DateTime @default(now())
+  order Order @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt 
+}
+
+model StatusLog{
+  id Int  @id @default(autoincrement())
+  orderId   Int
+  status    String
+  changedAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt 
+}
+
