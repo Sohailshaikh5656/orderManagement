@@ -1,5 +1,5 @@
 const express = require("express");
-const apiDoc = require("../order-management/modules/v1/Api_document/route")
+const apiDoc = require("./modules/v1/Api_document/route")
 const colors = require("colors")
 const dotenv = require("dotenv");
 const cors = require("cors"); // Import CORS
@@ -19,6 +19,7 @@ app_routing.v1(app)
 try{
     app.listen(process.env.PORT || 3000,()=>{
         console.log(`App Started on ${process.env.PORT} PORT`.bgGreen)
+        console.log(`Api Documentation : ${process.env.URL}${process.env.PORT}/api-doc`.bgCyan)
     })
 }catch(error){
     console.log(`Error in Server :${error}`.bgRed.white)
