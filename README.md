@@ -99,45 +99,47 @@ node app.js
 
 🧠 Test the API Documentation
 
-After starting the project, open this in your browser 👇
+After starting the project, open this in your browser 👇<br>
 👉 http://localhost:3000/api_doc
 
-This will open the EJS-based API Documentation Dashboard.
-
+This will open the EJS-based API Documentation Dashboard.<br>
+<br>
 🔐 Middleware Overview
 Middleware	Description
-validateApiKey	Validates API key from headers before processing routes.
-validateHeaderToken	Checks JWT token (skips /api-doc and /uploads routes).
-extractHeaderLanguage	(Optional) Extracts user’s preferred language from header.
-🧩 Features
+validateApiKey	Validates API key from headers before processing routes.<br>
+validateHeaderToken	Checks JWT token (skips /api-doc and /uploads routes).<br>
+extractHeaderLanguage	(Optional) Extracts user’s preferred language from header.<br>
 
-✅ Node.js + Express Backend
-✅ Prisma ORM Integration (MySQL)
-✅ Modular Folder Structure (v1 Modules)
-✅ API Key & JWT Token Authentication
-✅ Built-in API Documentation with EJS
-✅ Admin Controller & Buyer Model Included
-✅ Middleware-Based Request Validation
-✅ CORS Enabled
-✅ Easy to Extend and Maintain
+<br>
+🧩 Features<br><br>
 
-🧪 Example API Endpoint
+✅ Node.js + Express Backend<br>
+✅ Prisma ORM Integration (MySQL)<br>
+✅ Modular Folder Structure (v1 Modules)<br>
+✅ API Key & JWT Token Authentication<br>
+✅ Built-in API Documentation with EJS<br>
+✅ Admin Controller & Buyer Model Included<br>
+✅ Middleware-Based Request Validation<br>
+✅ CORS Enabled<br>
+✅ Easy to Extend and Maintain<br><br>
 
-Get Analytics
+🧪 Example API Endpoint<br><br>
 
-GET http://localhost:3000/api/admin/analytics
+Get Analytics<br>
+
+GET http://localhost:3000/api/admin/analytics<br><br>
 
 
-Get API Docs
+Get API Docs<br>
 
-GET http://localhost:3000/api_doc
+GET http://localhost:3000/api_doc<br>
 
-👨‍💻 Author
+👨‍💻 Author<br><br>
 
-Shaikh Sohel
-🎓 MCA Student @ LJ Campus
-💼 Full Stack Developer (Laravel | Node.js | Next.js | Django)
-📧 Email: shaikhsohail1131@gmail.com
+Shaikh Sohel<br>
+🎓 MCA Student @ LJ Campus<br>
+💼 Full Stack Developer (Laravel | Node.js | Next.js | Django)<br>
+📧 Email: shaikhsohail1131@gmail.com<br>
 
 🌐 GitHub: https://github.com/Sohailshaikh5656
 
