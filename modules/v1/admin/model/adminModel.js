@@ -142,6 +142,8 @@ class adminModel {
                     status: requestData.status
                 }
             })
+        
+
             if (requestData.status.toLowerCase() === statusArray[3].toLowerCase()) {
                 const orderData = await Prisma.orderItems.findMany({
                     where: { orderId: requestData.orderId }
@@ -236,6 +238,36 @@ class adminModel {
             });
 
 
+            //Error Loggg
+            let totalRevenue = 0
+            const AllSupplier = await Prisma.user.findMany({
+                where : {role : "Supplier"}, select: {
+                                        id: true,
+                                        name: true,
+                                        email: true
+                                    }
+            })
+            const allItems = await Prisma.orderItems.findMany({
+                include:{
+                    product:true
+                }
+            })
+
+            console.log("Data of trash : ",allItems)
+
+            for(let i=0;i<allItems.length;i++){
+                for(let j=0;j<AllSupplier.length;j++){
+                    if(allItems[i].product.supplierId == AllSupplier[j].id){
+                        AllSupplier[j].revenue = (AllSupplier[j]?.revenue || 0) + (allItems[i].totalPrice || 0)
+                        totalRevenue += allItems[i].totalPrice
+                    }
+                }
+            }
+
+            analyticData.revenue = {
+                total: totalRevenue,
+                supplierRevenu:AllSupplier
+            }
             // === Return Success ===
             return {
                 code: responseCode.SUCCESS,
