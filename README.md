@@ -11,6 +11,25 @@ A **modular Order Management System** built with **Node.js**, **Express**, **Pri
 
 ---
 
+
+📸 **Project Demo**
+
+<div align="center">
+<hr />
+<img src='./ScreenShot/s1.png' height=400>
+<br />
+<hr />
+<img src='./ScreenShot/s2.png' height=400>
+<br />
+<hr />
+<img src='./ScreenShot/s3.png' height=400>
+<br />
+<hr />
+<img src='./ScreenShot/s4.png' height=400>
+<br />
+<hr />
+</div>
+
 ## 📁 Project Structure
 
 ```bash
@@ -100,7 +119,7 @@ node app.js
 🧠 Test the API Documentation
 
 After starting the project, open this in your browser 👇<br>
-👉 http://localhost:3000/api_doc
+👉 http://localhost:3000/api-doc
 
 This will open the EJS-based API Documentation Dashboard.<br>
 <br>
@@ -132,7 +151,7 @@ GET http://localhost:3000/api/admin/analytics<br><br>
 
 Get API Docs<br>
 
-GET http://localhost:3000/api_doc<br>
+GET http://localhost:3000/api-doc<br>
 
 👨‍💻 Author<br><br>
 
